@@ -32,5 +32,19 @@
 <% if @pxefilename -%>
   filename <%= @pxefilename %>;
 <% end -%>
+<% if @allow_class.is_a? Array -%>
+<%   @allow_class.each do |allowed| -%>
+    allow members of "<%= allowed %>";
+<%   end -%>
+<% elsif @allow_class && !@allow_class.strip.empty? -%>
+    allow members of "<%= @allow_class %>";
+<% end -%>
+<% if @deny_class.is_a? Array -%>
+<%   @deny_class.each do |denied| -%>
+    deny members of "<%= denied %>";
+<%   end -%>
+<% elsif @deny_class && !@deny_class.strip.empty? -%>
+    deny members of "<%= @deny_class %>";
+<% end -%>
   }
 <% end -%>

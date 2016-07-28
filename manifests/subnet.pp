@@ -34,6 +34,8 @@ define dhcp::subnet::pool (
   $parameters      = undef,
   $pxeserver       = undef,
   $pxefilename     = undef,
+  $allow_class     = undef,
+  $deny_class      = undef,
 ) {
   concat::fragment { "dhcp.conf+70_${subnet}_2_${name}.dhcp":
     target  => "${::dhcp::dhcp_dir}/dhcpd.conf",
