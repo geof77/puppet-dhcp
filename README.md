@@ -11,6 +11,7 @@ Installs and manages a DHCP server.
 
 ## Features
 * Multiple subnet support
+* Multiple pools per subnet support
 * Host reservations
 * Secure dynamic DNS updates when combined with Bind
 * Failover support
@@ -31,22 +32,20 @@ Define the server and the zones it will be responsible for.
       pxefilename  => 'pxelinux.0',
     }
 
-### dhcp::pool
-Define the pool attributes
+### dhcp::subnet
+Define the subnet attributes
 
-    dhcp::pool{ 'ops.dc1.example.net':
+    dhcp::subnet{ 'ops.dc1.example.net':
       network => '10.0.1.0',
       mask    => '255.255.255.0',
-      range   => '10.0.1.100 10.0.1.200',
       gateway => '10.0.1.1',
     }
 
-Override global attributes with pool specific
+Override global attributes with subnet specific attributes
 
-    dhcp::pool{ 'ops.dc1.example.net':
+    dhcp::subnet{ 'ops.dc1.example.net':
       network     => '10.0.1.0',
       mask        => '255.255.255.0',
-      range       => '10.0.1.100 10.0.1.200',
       gateway     => '10.0.1.1',
       nameservers => ['10.0.1.2', '10.0.2.2'],
       pxeserver   => '10.0.1.2',
@@ -54,12 +53,54 @@ Override global attributes with pool specific
 
 For the support of static routes (RFC3442):
 
-    dhcp::pool{ 'ops.dc1.example.net':
+    dhcp::subnet{ 'ops.dc1.example.net':
       network => '10.0.1.0',
       mask    => '255.255.255.0',
-      range   => '10.0.1.100 10.0.1.200',
       gateway => '10.0.1.1',
       static_routes =>  [ { 'mask' => '32', 'network' => '169.254.169.254', 'gateway' => $ip } ],
+    }
+
+### dhcp::subnet::pool
+Define the pools attributes inside a subnet
+
+Simple pool example
+
+    dhcp::subnet::pool { "mypool":
+       subnet      => "ops.dc1.example.net"
+       range       => "10.0.1.50 10.0.1.250",
+       failover    => "dhcp-failover",
+    }
+
+
+Multiple pools with class filtering (see below)
+
+    dhcp::subnet::pool { "ppc64 pool":
+       subnet      => "ops.dc1.example.net",
+       range       => "10.0.1.10 10.0.1.49",
+       failover    => "dhcp-failover",
+       pxefilename => "yaboot",
+       parameters  => [
+         'allow members of "ppc64"',
+         'deny unknown-clients',
+       ],
+    }
+    dhcp::subnet::pool { "x86_64 pool":
+       subnet      => "ops.dc1.example.net"
+       range       => "10.0.1.50 10.0.1.250",
+       failover    => "dhcp-failover",
+       parameters  => [
+         'deny members of "ppc64"',
+         'allow unknown-clients',
+       ],
+    }
+
+### dhcp::class
+Class filtering
+
+Simple filter on the hostname's first 3 characters
+
+    dhcp::dhcp_class { "vios":
+      parameters => 'match if substring(option host-name,0,3) = "ppc"'
     }
 
 ### dhcp::host
@@ -69,6 +110,8 @@ Create host reservations.
       'server1': mac => "00:50:56:00:00:01", ip => "10.0.1.51";
       'server2': mac => "00:50:56:00:00:02", ip => "10.0.1.52";
       'server3': mac => "00:50:56:00:00:03", ip => "10.0.1.53";
+      'ppcsrv1': mac => "6c:ae:8b:00:00:10", ip => "10.0.1.11";
+      'ppcsrv2': mac => "6c:ae:8b:00:00:20", ip => "10.0.1.11";
     }
 
 ## Contributors
