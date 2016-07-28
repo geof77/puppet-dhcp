@@ -29,5 +29,8 @@
 <% if @pxeserver -%>
     next-server <%= @pxeserver %>;
 <% end -%>
+<% if @pxefilename -%>
+  filename <%= @pxefilename %>;
+<% end -%>
   }
 <% end -%>

@@ -7,6 +7,7 @@ define dhcp::subnet (
   $domain_name     = undef,
   $search_domains  = undef,
   $pxeserver       = undef,
+  $pxefilename     = undef,
 ) {
 
 # begin of subnet section
@@ -31,6 +32,8 @@ define dhcp::subnet::pool (
   $failover        = undef,
   $options         = undef,
   $parameters      = undef,
+  $pxeserver       = undef,
+  $pxefilename     = undef,
 ) {
   concat::fragment { "dhcp.conf+70_${subnet}_2_${name}.dhcp":
     target  => "${::dhcp::dhcp_dir}/dhcpd.conf",
