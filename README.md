@@ -12,6 +12,7 @@ Installs and manages a DHCP server.
 ## Features
 * Multiple subnet support
 * Multiple pools per subnet support
+* Class-based filtering for subnet pools
 * Host reservations
 * Secure dynamic DNS updates when combined with Bind
 * Failover support
