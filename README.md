@@ -99,7 +99,7 @@ Class filtering
 
 Simple filter on the hostname's first 3 characters
 
-    dhcp::dhcp_class { "vios":
+    dhcp::dhcp_class { "ppc64":
       parameters => 'match if substring(option host-name,0,3) = "ppc"'
     }
 
