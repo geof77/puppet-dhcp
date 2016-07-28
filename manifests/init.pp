@@ -24,6 +24,7 @@ class dhcp (
   $dhcp_root_group    = $dhcp::params::root_group,
   $ddns_domainname    = undef,
   $ddns_rev_domainname= undef,
+  $subnets            = {},
   $pools              = {},
   $hosts              = {},
   $includes           = undef,
@@ -118,7 +119,8 @@ class dhcp (
     order   => '01',
   }
 
-  create_resources('dhcp::pool', $pools)
+  create_resources('dhcp::subnet', $subnets)
+  create_resources('dhcp::subnet::pool', $pools)
   create_resources('dhcp::host', $hosts)
 
   service { $servicename:
