@@ -78,9 +78,9 @@ Multiple pools with class filtering (see below)
        subnet      => "ops.dc1.example.net",
        range       => "10.0.1.10 10.0.1.49",
        failover    => "dhcp-failover",
+       pxefilename => "yaboot",
+       allow_class => "ppc64",
        parameters  => [
-         'filename "yaboot"',
-         'allow members of "ppc64"',
          'deny unknown-clients',
        ],
     }
@@ -88,8 +88,8 @@ Multiple pools with class filtering (see below)
        subnet      => "ops.dc1.example.net",
        range       => "10.0.1.50 10.0.1.250",
        failover    => "dhcp-failover",
+       deny_class  => "ppc64",
        parameters  => [
-         'deny members of "ppc64"',
          'allow unknown-clients',
        ],
     }
