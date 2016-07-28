@@ -2,23 +2,6 @@
 <% if (@range && @range.is_a?(String) && !@range.strip.empty?) || (@range && @range.is_a?(Array)) -%>
   pool
   {
-<% if @failover && !@failover.strip.empty? -%>
-    failover peer "<%= @failover %>";
-<% end -%>
-<% if @options.is_a? Array -%>
-<%   @options.each do |opt| -%>
-    option <%= opt %>;
-<%   end -%>
-<% elsif @options && !@options.strip.empty? -%>
-    option <%= @options %>;
-<% end -%>
-<% if @parameters.is_a? Array -%>
-<%   @parameters.each do |param| -%>
-    <%= param %>;
-<%   end -%>
-<% elsif @parameters && !@parameters.strip.empty? -%>
-    <%= @parameters %>;
-<% end -%>
 <% if @range and @range.is_a? Array -%>
 <%   @range.each do |rng| -%>
     range <%= rng %>;
@@ -26,12 +9,13 @@
 <% elsif @range && !@range.strip.empty? -%>
     range <%= @range %>;
 <% end -%>
-<% if @pxeserver -%>
-    next-server <%= @pxeserver %>;
+<% if @failover && !@failover.strip.empty? -%>
+    failover peer "<%= @failover %>";
 <% end -%>
-<% if @pxefilename -%>
-    filename <%= @pxefilename %>;
-<% end -%>
+<% if @parameters.is_a? Array -%>
+<%   @parameters.each do |param| -%>
+    <%= param %>;
+<%   end -%>
 <% if @allow_class.is_a? Array -%>
 <%   @allow_class.each do |allowed| -%>
     allow members of "<%= allowed %>";
@@ -45,6 +29,22 @@
 <%   end -%>
 <% elsif @deny_class && !@deny_class.strip.empty? -%>
     deny members of "<%= @deny_class %>";
+<% end -%>
+<% elsif @parameters && !@parameters.strip.empty? -%>
+    <%= @parameters %>;
+<% end -%>
+<% if @options.is_a? Array -%>
+<%   @options.each do |opt| -%>
+    option <%= opt %>;
+<%   end -%>
+<% elsif @options && !@options.strip.empty? -%>
+    option <%= @options %>;
+<% end -%>
+<% if @pxeserver -%>
+    next-server <%= @pxeserver %>;
+<% end -%>
+<% if @pxefilename -%>
+    filename <%= @pxefilename %>;
 <% end -%>
   }
 <% end -%>
