@@ -30,7 +30,7 @@
     next-server <%= @pxeserver %>;
 <% end -%>
 <% if @pxefilename -%>
-  filename <%= @pxefilename %>;
+    filename <%= @pxefilename %>;
 <% end -%>
 <% if @allow_class.is_a? Array -%>
 <%   @allow_class.each do |allowed| -%>
