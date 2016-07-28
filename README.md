@@ -78,14 +78,14 @@ Multiple pools with class filtering (see below)
        subnet      => "ops.dc1.example.net",
        range       => "10.0.1.10 10.0.1.49",
        failover    => "dhcp-failover",
-       pxefilename => "yaboot",
        parameters  => [
+         'filename "yaboot"',
          'allow members of "ppc64"',
          'deny unknown-clients',
        ],
     }
     dhcp::subnet::pool { "x86_64 pool":
-       subnet      => "ops.dc1.example.net"
+       subnet      => "ops.dc1.example.net",
        range       => "10.0.1.50 10.0.1.250",
        failover    => "dhcp-failover",
        parameters  => [
