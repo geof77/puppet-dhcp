@@ -39,7 +39,7 @@ define dhcp::subnet::pool (
 ) {
   concat::fragment { "dhcp.conf+70_${subnet}_2_${name}.dhcp":
     target  => "${::dhcp::dhcp_dir}/dhcpd.conf",
-    content => template('dhcp/dhcpd.pool.erb'),
+    content => template('dhcp/dhcpd.subnet.pool.erb'),
     order   => "70-${subnet}-2-${name}",
   }
 }
